@@ -13,6 +13,8 @@ public class VectorSprite {
     double angle;
     double ROTATION; // A constant that represents the amount of change in angle
     double THRUST; // represents our accelaration
+    boolean active; // it track's if the dead / not dead states of stuff
+
 
 
 
@@ -45,6 +47,7 @@ public class VectorSprite {
             drawShape.xpoints[i] = x;
             drawShape.ypoints[i] = y;
         }
+        drawShape.invalidate();
         drawShape.translate((int)Math.round(xposition), (int)Math.round(yposition));
 
     }

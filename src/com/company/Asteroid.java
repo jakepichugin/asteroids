@@ -10,8 +10,16 @@ public class Asteroid extends VectorSprite{
         shape.addPoint(5, 20);
         shape.addPoint(-25, 10);
         shape.addPoint( -17, -15);
-        shape.addPoint(20, -35);
+        shape.addPoint(10, -20);
         shape.addPoint( 30, -10);
+
+//        shape.addPoint(0,-20);
+//        shape.addPoint(12, -20);
+//        shape.addPoint(15, -15);
+//        shape.addPoint( 12, 10);
+//        shape.addPoint(2, 15);
+//        shape.addPoint( -10, 6);
+//        shape.addPoint( -10, -25);
 
         drawShape = new Polygon();
         drawShape.addPoint(30,5);
@@ -37,6 +45,8 @@ public class Asteroid extends VectorSprite{
         a = Math.random() * (2 * Math.PI);
         xposition = Math.cos(a) * h + 450;
         yposition = Math.sin(a) * h + 300;
+
+        active = true;
     }
 
     public void updatePosition() {
