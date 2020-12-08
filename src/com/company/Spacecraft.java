@@ -39,7 +39,9 @@ public class Spacecraft extends VectorSprite{
     }
 
     public void hit() {
+
         active = false;
+        counter = 0;
     }
 
     public void reset() {

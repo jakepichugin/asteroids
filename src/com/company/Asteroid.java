@@ -4,31 +4,22 @@ import java.awt.*;
 
 public class Asteroid extends VectorSprite{
 
+    private Polygon createAsteroidShape() {
+        Polygon shape = new Polygon();
+        shape.addPoint(0,-50);
+        shape.addPoint(27, -40);
+        shape.addPoint(35, -10);
+        shape.addPoint( 27, 20);
+        shape.addPoint(0, 30);
+        shape.addPoint( -25, 10);
+        shape.addPoint( -25, -30);
+        return shape;
+    }
+
     public Asteroid() {
-        shape = new Polygon();
-        shape.addPoint(30,5);
-        shape.addPoint(5, 20);
-        shape.addPoint(-25, 10);
-        shape.addPoint( -17, -15);
-        shape.addPoint(10, -20);
-        shape.addPoint( 30, -10);
+        shape = createAsteroidShape();
 
-//        shape.addPoint(0,-20);
-//        shape.addPoint(12, -20);
-//        shape.addPoint(15, -15);
-//        shape.addPoint( 12, 10);
-//        shape.addPoint(2, 15);
-//        shape.addPoint( -10, 6);
-//        shape.addPoint( -10, -25);
-
-        drawShape = new Polygon();
-        drawShape.addPoint(30,5);
-        drawShape.addPoint(5, 20);
-        drawShape.addPoint(-25, 10);
-        drawShape.addPoint( -17, -15);
-        drawShape.addPoint(20, -35);
-        drawShape.addPoint( 30, -10);
-
+        drawShape = createAsteroidShape();
 
 
         ROTATION = Math.random() / 4;

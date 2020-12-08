@@ -24,6 +24,10 @@ public class Window extends JPanel {
             game.ship.paint(game.offg);
         }
         game.rock.paint(game.offg);
+        for (int i = 0; i < game.asteroidList.size(); i++) {
+            game.asteroidList.get(i).paint(game.offg);
+
+        }
         g.drawImage(game.offscreen, 0, 0, this);
         repaint();
     }

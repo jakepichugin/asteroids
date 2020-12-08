@@ -14,6 +14,8 @@ public class VectorSprite {
     double ROTATION; // A constant that represents the amount of change in angle
     double THRUST; // represents our accelaration
     boolean active; // it track's if the dead / not dead states of stuff
+    int counter; // increases by 1 with each timer tick
+
 
 
 
@@ -29,6 +31,8 @@ public class VectorSprite {
     }
 
     public void updatePosition() {
+        counter++;
+
         xposition += xspeed;
         yposition += yspeed;
 

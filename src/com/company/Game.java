@@ -6,17 +6,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class Game extends JFrame implements KeyListener, ActionListener {
 
     public Window panel; //creates an instance of the window class called panel
     Spacecraft ship;// creats an instance of vectorsprite called ship
     Asteroid rock;
+    ArrayList<Asteroid> asteroidList; // a bunch of rocks
     Timer timer;
     Image offscreen; // an image to be loaded offscreen
     Graphics offg; // a graphics object to go along with offscreen image
     boolean upKey, rightKey, leftKey; // fix the key locking
     //this is the start of the game
+
+
+
     public void init() {
 
         this.setVisible(true);
@@ -30,6 +35,11 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         offg = offscreen.getGraphics();
         ship = new Spacecraft();
         rock = new Asteroid();
+        asteroidList = new ArrayList();
+        for (int i = 0; i < 8; i++) { // 8 is max that is possible or maby 9!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            asteroidList.add(new Asteroid());
+        }
+
         add(this.panel = new Window(this), BorderLayout.CENTER);
         pack();
         timer = new Timer(20, this);
@@ -109,10 +119,15 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         keyCheck();
+        repsawnShip();
         ship.updatePosition();
         rock.updatePosition();
+        for (int i = 0; i < asteroidList.size(); i++) {
+            asteroidList.get(i).updatePosition();
+
+        }
         checkCollisions();
-        repsawnShip();
+
     }
 
     public boolean collision(VectorSprite thing1, VectorSprite thing2) {
@@ -144,15 +159,18 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     }
 
     public void checkCollisions() {
-
         if (collision(ship, rock)) {
             ship.hit();
         }
-
+        for (int i = 0; i < asteroidList.size(); i++) {
+            if (collision(ship, asteroidList.get(i))) {
+                ship.hit();
+            }
+        }
     }
 
     public void repsawnShip() {
-        if (ship.active == false) {
+        if (ship.active == false && ship.counter > 50) {
             ship.reset();
         }
     }
