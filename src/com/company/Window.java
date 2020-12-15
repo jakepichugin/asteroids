@@ -23,12 +23,21 @@ public class Window extends JPanel {
         if (game.ship.active) {
             game.ship.paint(game.offg);
         }
-        game.rock.paint(game.offg);
+        game.offg.setColor(Color.blue);
         for (int i = 0; i < game.asteroidList.size(); i++) {
             game.asteroidList.get(i).paint(game.offg);
+
+        }
+        game.offg.setColor(Color.red);
+        for (int i = 0; i < game.bulletsList.size(); i++) {
+            game.bulletsList.get(i).paint(game.offg);
 
         }
         g.drawImage(game.offscreen, 0, 0, this);
         repaint();
     }
+
+
+
+
 }

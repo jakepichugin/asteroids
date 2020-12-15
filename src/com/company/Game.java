@@ -12,14 +12,15 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
     public Window panel; //creates an instance of the window class called panel
     Spacecraft ship;// creats an instance of vectorsprite called ship
-    Asteroid rock;
+
     ArrayList<Asteroid> asteroidList; // a bunch of rocks
+
+    ArrayList<Bullet> bulletsList;      // list of shooting things
     Timer timer;
     Image offscreen; // an image to be loaded offscreen
     Graphics offg; // a graphics object to go along with offscreen image
-    boolean upKey, rightKey, leftKey; // fix the key locking
+    boolean upKey, rightKey, leftKey, spacekey; // fix the key locking
     //this is the start of the game
-
 
 
     public void init() {
@@ -34,11 +35,13 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         offscreen = createImage(this.getWidth(), this.getHeight());
         offg = offscreen.getGraphics();
         ship = new Spacecraft();
-        rock = new Asteroid();
         asteroidList = new ArrayList();
         for (int i = 0; i < 8; i++) { // 8 is max that is possible or maby 9!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             asteroidList.add(new Asteroid());
         }
+        bulletsList = new ArrayList();
+
+
 
         add(this.panel = new Window(this), BorderLayout.CENTER);
         pack();
@@ -49,14 +52,9 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     }
 
 
-
-
     public void update(Graphics g) {
         paint(g);
     }
-
-
-
 
 
     @Override
@@ -81,6 +79,9 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
 
         }
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            spacekey = true;
+        }
         repaint();
     }
 
@@ -101,18 +102,24 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
 
         }
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            spacekey = false;
+        }
 
     }
 
     private void keyCheck() {
-        if(rightKey == true) {
+        if (rightKey == true) {
             ship.rotateRight();
         }
-        if(leftKey == true) {
+        if (leftKey == true) {
             ship.rotateLeft();
         }
-        if(upKey == true) {
+        if (upKey == true) {
             ship.accelerate();
+        }
+        if (spacekey == true) {
+            bulletsList.add(new Bullet(ship.xposition, ship.yposition, ship.angle));
         }
     }
 
@@ -121,9 +128,13 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         keyCheck();
         repsawnShip();
         ship.updatePosition();
-        rock.updatePosition();
+
         for (int i = 0; i < asteroidList.size(); i++) {
             asteroidList.get(i).updatePosition();
+
+        }
+        for (int i = 0; i < bulletsList.size(); i++) {
+            bulletsList.get(i).updatePosition();
 
         }
         checkCollisions();
@@ -136,8 +147,8 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
         for (int i = 0; i < thing1.drawShape.npoints; i++) {
 
-           x = thing1.drawShape.xpoints[i];
-           y = thing1.drawShape.ypoints[i];
+            x = thing1.drawShape.xpoints[i];
+            y = thing1.drawShape.ypoints[i];
 
             if (thing2.drawShape.contains(x, y)) {
                 return true;
@@ -159,9 +170,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     }
 
     public void checkCollisions() {
-        if (collision(ship, rock)) {
-            ship.hit();
-        }
+
         for (int i = 0; i < asteroidList.size(); i++) {
             if (collision(ship, asteroidList.get(i))) {
                 ship.hit();
@@ -170,9 +179,22 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     }
 
     public void repsawnShip() {
-        if (ship.active == false && ship.counter > 50) {
+        if (ship.active == false && ship.counter > 50 && isRespawnSafe()) {
             ship.reset();
         }
     }
 
+    public boolean isRespawnSafe() {
+        int x, y, h;
+        for (int i = 0; i < asteroidList.size(); i++) {
+            x = (int) (asteroidList.get(i).xposition - 450);
+            y = (int) (asteroidList.get(i).yposition - 300);
+            h = (int) Math.sqrt((x * x) + (y * y));
+            if (h < 100) {
+                return false;
+            }
+
+        }
+        return true;
+    }
 }

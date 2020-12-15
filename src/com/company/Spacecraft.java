@@ -6,7 +6,7 @@ public class Spacecraft extends VectorSprite{
 
     public Spacecraft() {
         ROTATION = 0.1;
-        THRUST = 0.5;
+        THRUST = 0.40;
 
         shape = new Polygon();
         shape.addPoint(15,0);
