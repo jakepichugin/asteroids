@@ -23,7 +23,7 @@ public class Window extends JPanel {
         if (game.ship.active) {
             game.ship.paint(game.offg);
         }
-        game.offg.setColor(Color.blue);
+        game.offg.setColor(Color.GRAY);
         for (int i = 0; i < game.asteroidList.size(); i++) {
             game.asteroidList.get(i).paint(game.offg);
 

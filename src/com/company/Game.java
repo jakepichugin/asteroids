@@ -36,7 +36,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         offg = offscreen.getGraphics();
         ship = new Spacecraft();
         asteroidList = new ArrayList();
-        for (int i = 0; i < 8; i++) { // 8 is max that is possible or maby 9!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        for (int i = 0; i < 6; i++) { // 8 is max that is possible or maby 9!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             asteroidList.add(new Asteroid());
         }
         bulletsList = new ArrayList();
@@ -45,7 +45,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
         add(this.panel = new Window(this), BorderLayout.CENTER);
         pack();
-        timer = new Timer(20, this);
+        timer = new Timer(20,   this);
         timer.start();
 
 
@@ -119,7 +119,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
             ship.accelerate();
         }
         if (spacekey == true) {
-            bulletsList.add(new Bullet(ship.xposition, ship.yposition, ship.angle));
+           fireBullet();
         }
     }
 
@@ -131,70 +131,99 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
         for (int i = 0; i < asteroidList.size(); i++) {
             asteroidList.get(i).updatePosition();
+        }
+            for (int i = 0; i < bulletsList.size(); i++) {
+                bulletsList.get(i).updatePosition();
+                if (bulletsList.get(i).counter == 61 || bulletsList.get(i).active == false) {
+                    bulletsList.remove(i);
+                }
+
+            }
+            checkCollisions();
+            checkAsteroidDestruction();
 
         }
-        for (int i = 0; i < bulletsList.size(); i++) {
-            bulletsList.get(i).updatePosition();
 
-        }
-        checkCollisions();
+        public boolean collision(VectorSprite thing1, VectorSprite thing2) {
 
-    }
+            int x, y;
 
-    public boolean collision(VectorSprite thing1, VectorSprite thing2) {
+            for (int i = 0; i < thing1.drawShape.npoints; i++) {
 
-        int x, y;
+                x = thing1.drawShape.xpoints[i];
+                y = thing1.drawShape.ypoints[i];
 
-        for (int i = 0; i < thing1.drawShape.npoints; i++) {
+                if (thing2.drawShape.contains(x, y)) {
+                    return true;
+                }
 
-            x = thing1.drawShape.xpoints[i];
-            y = thing1.drawShape.ypoints[i];
-
-            if (thing2.drawShape.contains(x, y)) {
-                return true;
             }
 
-        }
+            for (int i = 0; i < thing2.drawShape.npoints; i++) {
 
-        for (int i = 0; i < thing2.drawShape.npoints; i++) {
+                x = thing2.drawShape.xpoints[i];
+                y = thing2.drawShape.ypoints[i];
 
-            x = thing2.drawShape.xpoints[i];
-            y = thing2.drawShape.ypoints[i];
+                if (thing1.drawShape.contains(x, y)) {
+                    return true;
+                }
 
-            if (thing1.drawShape.contains(x, y)) {
-                return true;
             }
-
+            return false;
         }
-        return false;
-    }
 
-    public void checkCollisions() {
+        public void checkCollisions() {
 
-        for (int i = 0; i < asteroidList.size(); i++) {
-            if (collision(ship, asteroidList.get(i))) {
-                ship.hit();
+            for (int i = 0; i < asteroidList.size(); i++) {
+                if (collision(ship, asteroidList.get(i))) {
+                    ship.hit();
+                }
+                for (int uh = 0; uh < bulletsList.size(); uh++) {
+                    if (collision(bulletsList.get(uh), asteroidList.get(i))) {
+                        bulletsList.get(uh).active = false;
+                        asteroidList.get(i).active = false;
+
+
+                    }
+                }
             }
         }
-    }
 
-    public void repsawnShip() {
-        if (ship.active == false && ship.counter > 50 && isRespawnSafe()) {
-            ship.reset();
+        public void repsawnShip() {
+            if (ship.active == false && ship.counter > 20 && isRespawnSafe()) {
+                ship.reset();
+            }
         }
-    }
 
-    public boolean isRespawnSafe() {
-        int x, y, h;
-        for (int i = 0; i < asteroidList.size(); i++) {
-            x = (int) (asteroidList.get(i).xposition - 450);
-            y = (int) (asteroidList.get(i).yposition - 300);
-            h = (int) Math.sqrt((x * x) + (y * y));
-            if (h < 100) {
+        public boolean isRespawnSafe() {
+            int x, y, h;
+            for (int i = 0; i < asteroidList.size(); i++) {
+                x = (int) (asteroidList.get(i).xposition - 450);
+                y = (int) (asteroidList.get(i).yposition - 300);
+                h = (int) Math.sqrt((x * x) + (y * y));
+                if (h < 70) {
                 return false;
             }
 
         }
         return true;
+    }
+
+    public void fireBullet() {
+        if (ship.counter > 10 && ship.active) { //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            bulletsList.add(new Bullet(ship.drawShape.xpoints[0], ship.drawShape.ypoints[0], ship.angle));
+            ship.counter = 0;
+        }
+    }
+    public void checkAsteroidDestruction() {
+        for (int i = 0; i < asteroidList.size(); i++)
+            if (asteroidList.get(i).active == false) {
+                if (asteroidList.get(i).size > 1) {
+                    asteroidList.add(new Asteroid(asteroidList.get(i).xposition, asteroidList.get(i).yposition, asteroidList.get(i).size - 1));
+                    asteroidList.add(new Asteroid(asteroidList.get(i).xposition, asteroidList.get(i).yposition, asteroidList.get(i).size - 1));
+                }
+                asteroidList.remove(i);
+
+            }
     }
 }

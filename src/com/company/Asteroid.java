@@ -4,19 +4,35 @@ import java.awt.*;
 
 public class Asteroid extends VectorSprite{
 
+    int size;
+
     private Polygon createAsteroidShape() {
         Polygon shape = new Polygon();
-        shape.addPoint(0,-50);
-        shape.addPoint(27, -40);
-        shape.addPoint(35, -10);
-        shape.addPoint( 27, 20);
-        shape.addPoint(0, 30);
-        shape.addPoint( -25, 10);
-        shape.addPoint( -25, -30);
+        shape.addPoint(0 * size,-25 * size);
+        shape.addPoint(13 * size, -20 * size);
+        shape.addPoint(17 * size, -5 * size);
+        shape.addPoint( 13 * size, 10 * size);
+        shape.addPoint(0 * size, 15 * size);
+        shape.addPoint( -12 * size, 5 * size);
+        shape.addPoint( -12 * size, -15 * size);
         return shape;
     }
 
     public Asteroid() {
+        size = 3;
+        initiolizeAsteroid();
+
+    }
+
+    public Asteroid(double x, double y, int s) {
+        size = s;
+        initiolizeAsteroid();
+        xposition = x;
+        yposition = y;
+
+    }
+
+    public void initiolizeAsteroid() {
         shape = createAsteroidShape();
 
         drawShape = createAsteroidShape();
@@ -38,6 +54,7 @@ public class Asteroid extends VectorSprite{
         yposition = Math.sin(a) * h + 300;
 
         active = true;
+
     }
 
     public void updatePosition() {
