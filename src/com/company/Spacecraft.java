@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Spacecraft extends VectorSprite{
 
+    int lives;
+
     public Spacecraft() {
         ROTATION = 0.1;
         THRUST = 0.7;
@@ -22,6 +24,7 @@ public class Spacecraft extends VectorSprite{
         yposition = 300;
 
         active = true;
+        lives = 3;
 
     }
 
@@ -42,12 +45,13 @@ public class Spacecraft extends VectorSprite{
 
         active = false;
         counter = 0;
+        lives--;
     }
 
     public void reset() {
         xposition = 450;
         yposition = 300;
-        xspeed = 0;
+        xspeed = 0.5;
         yspeed = 0;
         angle = 0;
         active = true;

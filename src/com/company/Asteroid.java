@@ -38,15 +38,15 @@ public class Asteroid extends VectorSprite{
         drawShape = createAsteroidShape();
 
 
-        ROTATION = Math.random() / 4;
+        ROTATION = (Math.random() / 4) / (size)    ;
         System.out.println(ROTATION);
         THRUST = 1;
 
         double h, a;
         h = Math.random() + 3;
         a = Math.random() * (2 * Math.PI);
-        xspeed = Math.cos(a) * h;
-        yspeed = Math.sin(a) * h;
+        xspeed = (Math.cos(a) * h) / (size);
+        yspeed = (Math.sin(a) * h) / (size);
 
         h = Math.random() * 400 + 100;
         a = Math.random() * (2 * Math.PI);

@@ -20,7 +20,9 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     Image offscreen; // an image to be loaded offscreen
     Graphics offg; // a graphics object to go along with offscreen image
     boolean upKey, rightKey, leftKey, spacekey; // fix the key locking
+    int score; // keeps tack of current score
     //this is the start of the game
+
 
 
     public void init() {
@@ -41,7 +43,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         }
         bulletsList = new ArrayList();
 
-
+        score = 0;
 
         add(this.panel = new Window(this), BorderLayout.CENTER);
         pack();
@@ -175,11 +177,13 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         public void checkCollisions() {
 
             for (int i = 0; i < asteroidList.size(); i++) {
-                if (collision(ship, asteroidList.get(i))) {
+                if (collision(ship, asteroidList.get(i)) && ship.active) {
+                    score -= 5;
                     ship.hit();
                 }
                 for (int uh = 0; uh < bulletsList.size(); uh++) {
                     if (collision(bulletsList.get(uh), asteroidList.get(i))) {
+                        score += 1;
                         bulletsList.get(uh).active = false;
                         asteroidList.get(i).active = false;
 
