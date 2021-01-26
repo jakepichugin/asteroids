@@ -24,9 +24,9 @@ public class Window extends JPanel {
         game.offg.drawString("Lives: " + game.ship.lives, 20, 570);
         game.offg.drawString("Score: " + game.score, 20, 530);
         if (game.ship.lives == 0) {
-            game.offg.setFont(new Font ("MySTyle", Font.ROMAN_BASELINE, 50));
+            game.offg.setFont(new Font ("MySTyle", Font.ROMAN_BASELINE, 100));
             game.offg.setColor(Color.red);
-            game.offg.drawString("Wasted", 380, 300);
+            game.offg.drawString("Wasted", 300, 325);
             game.ship.active = false;
         }
 
@@ -36,6 +36,10 @@ public class Window extends JPanel {
         game.offg.setColor(Color.GRAY);
         for (int i = 0; i < game.asteroidList.size(); i++) {
             game.asteroidList.get(i).paint(game.offg);
+
+        }
+        for (int i = 0; i < game.debrisList.size(); i++) {
+            game.debrisList.get(i).paint(game.offg);
 
         }
         game.offg.setColor(Color.red);
