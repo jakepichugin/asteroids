@@ -1,22 +1,21 @@
 package com.company;
 
+import javax.sound.sampled.Clip;
 import javax.swing.*;
-import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class Game extends JFrame implements KeyListener, ActionListener {
 
+    public Menu mainMenu; // creates an sinstance of the menu class mainmenu
     public Window panel; //creates an instance of the window class called panel
     Spacecraft ship;// creats an instance of vectorsprite called ship
-
+    boolean startGame = false;
     ArrayList<Asteroid> asteroidList; // a bunch of rocks
     ArrayList<Bullet> bulletsList;      // list of shooting things
     ArrayList<Debris> debrisList; // not the minecraft one
@@ -26,9 +25,11 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     boolean upKey, rightKey, leftKey, spacekey; // fix the key locking
     int score; // keeps tack of current score
     AudioUtil spotipie; // a tool for utilisizing audio Functionality and stuff
-    AudioClip laser; // Audio clip thats plays when we shoot
-    AudioClip thruster;// sound of exalarations
-    AudioClip explode;
+    Clip laser; // Audio clip thats plays when we shoot
+    Clip thruster;// sound of exalarations
+    Clip explode;
+    Clip wasted;
+    Clip gamemusic;
     //this is the start of the game
 
 
@@ -52,16 +53,18 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         debrisList = new ArrayList();
         score = 0;
 
-        add(this.panel = new Window(this), BorderLayout.CENTER);
+        add(this.mainMenu = new Menu(this), BorderLayout.CENTER);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         pack();
+
         timer = new Timer(20, this);
         timer.start();
 
         spotipie = AudioUtil.getInstance();
-        laser = Applet.newAudioClip(spotipie.transform(new File("./src/sounds/laser80.wav")));
-        thruster = Applet.newAudioClip(spotipie.transform(new File("./src/sounds/thruster.wav")));
-        explode = Applet.newAudioClip(spotipie.transform(new File("./src/sounds/explode0.wav")));
-
+        laser = spotipie.readSoundFile("./src/sounds/laser80.wav");
+        thruster = spotipie.readSoundFile("./src/sounds/thruster.wav");
+        explode = spotipie.readSoundFile("./src/sounds/explode0.wav");
+        wasted = spotipie.readSoundFile("./src/sounds/explode0.wav");
+//        gamemusic = spotipie.readSoundFile();
     }
 
 
@@ -131,7 +134,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         if (upKey == true) {
             ship.accelerate();
             if (ship.active ==true) {
-                thruster.play();
+                thruster.loop(1);
             }
         }
         if (spacekey == true) {
@@ -141,6 +144,12 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (startGame == true) {
+            remove(this.mainMenu);
+            add(this.panel = new Window(this), BorderLayout.CENTER);
+            pack();
+            startGame = false;
+        }
         keyCheck();
         repsawnShip();
         ship.updatePosition();
@@ -205,7 +214,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                 randomNumo = Math.random() * 50 + 70; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 for (int fart = 0; fart < randomNumo; fart++) {
                     debrisList.add(new Debris(ship.xposition, ship.yposition));
-                    explode.play();
+                    explode.start();
                 }
             }
             for (int uh = 0; uh < bulletsList.size(); uh++) {
@@ -216,7 +225,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                     randomNumo = Math.random() * 50 + 70; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     for (int fart = 0; fart < randomNumo; fart++) {
                         debrisList.add(new Debris(asteroidList.get(i).xposition, asteroidList.get(i).yposition));
-                        explode.play();
+                        explode.start();
                     }
 
                 }
@@ -225,7 +234,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     }
 
     public void repsawnShip() {
-        if (ship.active == false && ship.counter > 20 && isRespawnSafe()) {
+        if (ship.active == false && ship.counter > 20 && isRespawnSafe() && ship.lives > 0) {
             ship.reset();
         }
     }
@@ -248,7 +257,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         if (ship.counter > 7 && ship.active) { //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             bulletsList.add(new Bullet(ship.drawShape.xpoints[0], ship.drawShape.ypoints[0], ship.angle));
             ship.counter = 0;
-            laser.play();
+            laser.loop(1); //.play();
         }
     }
 

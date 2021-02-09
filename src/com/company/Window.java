@@ -27,6 +27,7 @@ public class Window extends JPanel {
             game.offg.setFont(new Font ("MySTyle", Font.ROMAN_BASELINE, 100));
             game.offg.setColor(Color.red);
             game.offg.drawString("Wasted", 300, 325);
+            game.wasted.start();
             game.ship.active = false;
         }
 
