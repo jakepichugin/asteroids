@@ -23,8 +23,8 @@ public class Spacecraft extends VectorSprite{
         xposition = 450;
         yposition = 300;
 
-        active = true;
-        lives = 3;
+        active = false;
+        lives = 0;
 
     }
 

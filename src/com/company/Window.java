@@ -23,6 +23,7 @@ public class Window extends JPanel {
         game.offg.setFont(new Font ("MySTyle", Font.ROMAN_BASELINE, 30));
         game.offg.drawString("Lives: " + game.ship.lives, 20, 570);
         game.offg.drawString("Score: " + game.score, 20, 530);
+
         if (game.ship.lives == 0) {
             game.offg.setFont(new Font ("MySTyle", Font.ROMAN_BASELINE, 100));
             game.offg.setColor(Color.red);
@@ -32,6 +33,7 @@ public class Window extends JPanel {
         }
 
         if (game.ship.active) {
+            game.offg.setColor(Color.GREEN);
             game.ship.paint(game.offg);
         }
         game.offg.setColor(Color.GRAY);

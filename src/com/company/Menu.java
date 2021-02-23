@@ -24,10 +24,20 @@ public class Menu extends JPanel {
         game.offg.setFont(new Font("MySTyle", Font.ROMAN_BASELINE, 30));
         game.offg.drawString("Menu" , 410, 80);
 
-        //Create JButton
+        createButtons();
+
+        g.drawImage(game.offscreen, 0, 0, this);
+        repaint();
+
+    }
+
+    public void createButtons() {
         JButton startButton = new JButton("Start");
-        // add the button
+        this.setLayout(null);
+        startButton.setBounds(400, 400, 100, 40);
         this.add(startButton);
+
+        startButton.setFocusable(false);// makes so we can use keys after pressing button
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -35,8 +45,10 @@ public class Menu extends JPanel {
             }
         });
 
-        g.drawImage(game.offscreen, 0, 0, this);
-        repaint();
+        JButton shipColorButton = new JButton("Ship color");
+        shipColorButton.setBounds(300, 350, 100, 40);
+        this.add(shipColorButton);
 
+        shipColorButton.setFocusable(false);// makes so we can use keys after pressing button
     }
 }

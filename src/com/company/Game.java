@@ -20,6 +20,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     ArrayList<Bullet> bulletsList;      // list of shooting things
     ArrayList<Debris> debrisList; // not the minecraft one
     Timer timer;
+    double gameCounter;
     Image offscreen; // an image to be loaded offscreen
     Graphics offg; // a graphics object to go along with offscreen image
     boolean upKey, rightKey, leftKey, spacekey; // fix the key locking
@@ -58,6 +59,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
         timer = new Timer(20, this);
         timer.start();
+        gameCounter = 0;
 
         spotipie = AudioUtil.getInstance();
         laser = spotipie.readSoundFile("./src/sounds/laser80.wav");
@@ -144,22 +146,26 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (startGame == true) {
+        if (startGame) {
             remove(this.mainMenu);
             add(this.panel = new Window(this), BorderLayout.CENTER);
             pack();
+            ship.lives = 3;
+            ship.active = true;
             startGame = false;
         }
         keyCheck();
         repsawnShip();
         ship.updatePosition();
 
+
+
         for (int i = 0; i < asteroidList.size(); i++) {
             asteroidList.get(i).updatePosition();
         }
         for (int i = 0; i < bulletsList.size(); i++) {
             bulletsList.get(i).updatePosition();
-            if (bulletsList.get(i).counter == 61 || bulletsList.get(i).active == false) {
+            if (bulletsList.get(i).counter == 61 || !bulletsList.get(i).active) {
                 bulletsList.remove(i);
             }
 
