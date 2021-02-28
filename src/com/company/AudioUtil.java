@@ -30,4 +30,14 @@ public class AudioUtil {
             throw new RuntimeException(exc); //exc.printStackTrace(System.out);
         }
     }
+
+    public void playSound(Clip clip) {
+        if (clip == null) {
+            throw new RuntimeException("The sound object is null.");
+        }
+        clip.stop();
+        clip.setMicrosecondPosition(0);
+        clip.start();
+    }
+
 }

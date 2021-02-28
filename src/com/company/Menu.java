@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Menu extends JPanel {
+public class      Menu extends JPanel {
 
     private Game game;
 

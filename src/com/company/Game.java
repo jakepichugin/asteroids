@@ -62,7 +62,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         gameCounter = 0;
 
         spotipie = AudioUtil.getInstance();
-        laser = spotipie.readSoundFile("./src/sounds/laser80.wav");
+        laser = spotipie.readSoundFile("./src/sounds/laser79.wav");
         thruster = spotipie.readSoundFile("./src/sounds/thruster.wav");
         explode = spotipie.readSoundFile("./src/sounds/explode0.wav");
         wasted = spotipie.readSoundFile("./src/sounds/explode0.wav");
@@ -136,7 +136,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         if (upKey == true) {
             ship.accelerate();
             if (ship.active ==true) {
-                thruster.loop(1);
+                spotipie.playSound(thruster);
             }
         }
         if (spacekey == true) {
@@ -193,6 +193,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
             if (thing2.drawShape.contains(x, y)) {
                 return true;
+
             }
 
         }
@@ -220,7 +221,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                 randomNumo = Math.random() * 50 + 70; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 for (int fart = 0; fart < randomNumo; fart++) {
                     debrisList.add(new Debris(ship.xposition, ship.yposition));
-                    explode.start();
+                    spotipie.playSound(explode);
                 }
             }
             for (int uh = 0; uh < bulletsList.size(); uh++) {
@@ -231,7 +232,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                     randomNumo = Math.random() * 50 + 70; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     for (int fart = 0; fart < randomNumo; fart++) {
                         debrisList.add(new Debris(asteroidList.get(i).xposition, asteroidList.get(i).yposition));
-                        explode.start();
+                        spotipie.playSound(explode);
                     }
 
                 }
@@ -263,7 +264,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         if (ship.counter > 7 && ship.active) { //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             bulletsList.add(new Bullet(ship.drawShape.xpoints[0], ship.drawShape.ypoints[0], ship.angle));
             ship.counter = 0;
-            laser.loop(1); //.play();
+            spotipie.playSound(laser);
         }
     }
 
@@ -275,7 +276,6 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                     asteroidList.add(new Asteroid(asteroidList.get(i).xposition, asteroidList.get(i).yposition, asteroidList.get(i).size - 1));
                 }
                 asteroidList.remove(i);
-
             }
     }
 }
