@@ -6,6 +6,8 @@ public class Spacecraft extends VectorSprite{
 
     int lives;
 
+    Color shipColor = Color.GREEN;
+
     public Spacecraft() {
         ROTATION = 0.1;
         THRUST = 0.7;
@@ -55,6 +57,14 @@ public class Spacecraft extends VectorSprite{
         yspeed = 0;
         angle = 0;
         active = true;
+    }
+
+    public Color getShipColor() {
+        return shipColor;
+    }
+
+    public void setShipColor(Color shipColor) {
+        this.shipColor = shipColor;
     }
 
 }

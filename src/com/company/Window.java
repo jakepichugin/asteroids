@@ -33,7 +33,7 @@ public class Window extends JPanel {
         }
 
         if (game.ship.active) {
-            game.offg.setColor(Color.GREEN);
+            game.offg.setColor(game.ship.getShipColor());
             game.ship.paint(game.offg);
         }
         game.offg.setColor(Color.GRAY);

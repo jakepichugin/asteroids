@@ -4,8 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-public class      Menu extends JPanel {
+public class Menu extends JPanel {
 
     private Game game;
 
@@ -13,6 +17,8 @@ public class      Menu extends JPanel {
         this.game = game;
         setPreferredSize(new Dimension(900, 600));
         setBackground(Color.black);
+
+        createButtons();
     }
 
     @Override
@@ -24,11 +30,8 @@ public class      Menu extends JPanel {
         game.offg.setFont(new Font("MySTyle", Font.ROMAN_BASELINE, 30));
         game.offg.drawString("Menu" , 410, 80);
 
-        createButtons();
-
         g.drawImage(game.offscreen, 0, 0, this);
         repaint();
-
     }
 
     public void createButtons() {
@@ -45,10 +48,41 @@ public class      Menu extends JPanel {
             }
         });
 
-        JButton shipColorButton = new JButton("Ship color");
-        shipColorButton.setBounds(300, 350, 100, 40);
-        this.add(shipColorButton);
-
-        shipColorButton.setFocusable(false);// makes so we can use keys after pressing button
+        this.add(createColorSelector());
     }
+
+    private JComboBox createColorSelector() {
+
+        Map<String, Color> colorsMap = new LinkedHashMap<>();
+        colorsMap.put("Red", Color.RED);
+        colorsMap.put("Green", Color.GREEN);
+        colorsMap.put("Blue", Color.BLUE);
+        colorsMap.put("Cyan", Color.CYAN);
+        colorsMap.put("Magenta", Color.MAGENTA);
+
+        JComboBox dropdown = new JComboBox(colorsMap.keySet().toArray());
+
+        String shipColor = "";
+        for (Map.Entry<String, Color> entry : colorsMap.entrySet()) {
+            if (entry.getValue() == game.ship.getShipColor()) {
+                shipColor = entry.getKey();
+                break;
+            }
+        }
+        shipColor = shipColor.substring(0, 1).toUpperCase() + shipColor.substring(1);
+
+        dropdown.setSelectedItem(shipColor);
+
+        dropdown.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent event) {
+                if (event.getStateChange() == 1) {
+                    game.ship.setShipColor(colorsMap.get(event.getItem()));
+                }
+            }
+        });
+        dropdown.setBounds(400, 330, 100, 40);
+        dropdown.setFocusable(false);
+        return dropdown;
+    }
+
 }
