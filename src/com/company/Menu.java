@@ -59,6 +59,12 @@ public class Menu extends JPanel {
         colorsMap.put("Blue", Color.BLUE);
         colorsMap.put("Cyan", Color.CYAN);
         colorsMap.put("Magenta", Color.MAGENTA);
+        colorsMap.put("Orange", Color.ORANGE);
+        colorsMap.put("Yellow", Color.YELLOW);
+        colorsMap.put("White", Color.WHITE);
+        colorsMap.put("Pink", Color.PINK);
+        colorsMap.put("Gray", Color.GRAY);
+        colorsMap.put("Dark gray", Color.DARK_GRAY);
 
         JComboBox dropdown = new JComboBox(colorsMap.keySet().toArray());
 

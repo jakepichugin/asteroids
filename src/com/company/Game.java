@@ -16,15 +16,23 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     public Window panel; //creates an instance of the window class called panel
     Spacecraft ship;// creats an instance of vectorsprite called ship
     boolean startGame = false;
+
     ArrayList<Asteroid> asteroidList; // a bunch of rocks
     ArrayList<Bullet> bulletsList;      // list of shooting things
     ArrayList<Debris> debrisList; // not the minecraft one
+    double randomNumo; // randooo numbre
+
     Timer timer;
     double gameCounter;
+    int wavesSpawned;
+
     Image offscreen; // an image to be loaded offscreen
     Graphics offg; // a graphics object to go along with offscreen image
+
     boolean upKey, rightKey, leftKey, spacekey; // fix the key locking
+
     int score; // keeps tack of current score
+
     AudioUtil spotipie; // a tool for utilisizing audio Functionality and stuff
     Clip laser; // Audio clip thats plays when we shoot
     Clip thruster;// sound of exalarations
@@ -47,9 +55,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         offg = offscreen.getGraphics();
         ship = new Spacecraft();
         asteroidList = new ArrayList();
-        for (int i = 0; i < 6; i++) { // 8 is max that is possible or maby 9!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            asteroidList.add(new Asteroid());
-        }
+
         bulletsList = new ArrayList();
         debrisList = new ArrayList();
         score = 0;
@@ -60,6 +66,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         timer = new Timer(20, this);
         timer.start();
         gameCounter = 0;
+        wavesSpawned = 0;
 
         spotipie = AudioUtil.getInstance();
         laser = spotipie.readSoundFile("./src/sounds/laser79.wav");
@@ -138,6 +145,13 @@ public class Game extends JFrame implements KeyListener, ActionListener {
             if (ship.active ==true) {
                 spotipie.playSound(thruster);
             }
+
+            // make the back thruster go brrr
+            randomNumo = Math.random() * 50 + 70; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            for (int fart = 0; fart < randomNumo; fart++) {
+                debrisList.add(new Debris(ship.xposition, ship.yposition));
+            }
+
         }
         if (spacekey == true) {
             fireBullet();
@@ -152,13 +166,33 @@ public class Game extends JFrame implements KeyListener, ActionListener {
             pack();
             ship.lives = 3;
             ship.active = true;
+
+            for (int i = 0; i < 6; i++) { // 8 is max that is possible or maby 9!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                asteroidList.add(new Asteroid());
+            }
             startGame = false;
+
         }
+
         keyCheck();
         repsawnShip();
         ship.updatePosition();
+        gameCounter++;
+        //adding waves of big rocks that hurt
+        if (gameCounter > 500 && asteroidList.isEmpty() == false) {
+            asteroidList.add(new Asteroid(0, 0, 3));
+            wavesSpawned++;
+            if (wavesSpawned > 2) {
+                asteroidList.add(new Asteroid(0,0,3));
+                asteroidList.add(new Asteroid(0,0,3));
+            }
+            if (wavesSpawned > 5) {
+                asteroidList.add(new Asteroid(0,0,3));
+                asteroidList.add(new Asteroid(0,0,3));
+            }
 
-
+            gameCounter = 0;
+        }
 
         for (int i = 0; i < asteroidList.size(); i++) {
             asteroidList.get(i).updatePosition();
@@ -214,7 +248,6 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     public void checkCollisions() {
 
         for (int i = 0; i < asteroidList.size(); i++) {
-            double randomNumo; // randooo numbre
             if (collision(ship, asteroidList.get(i)) && ship.active) {
                 score -= 5;
                 ship.hit();
@@ -252,7 +285,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
             x = (int) (asteroidList.get(i).xposition - 450);
             y = (int) (asteroidList.get(i).yposition - 300);
             h = (int) Math.sqrt((x * x) + (y * y));
-            if (h < 70) {
+            if (h < 100) {
                 return false;
             }
 

@@ -26,7 +26,7 @@ public class VectorSprite {
     }
 
     public void paint(Graphics g) {
-        g.drawPolygon(drawShape);
+        g.fillPolygon(drawShape);
 
     }
 
