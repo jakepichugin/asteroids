@@ -49,6 +49,7 @@ public class Menu extends JPanel {
         });
 
         this.add(createColorSelector());
+        this.add(createGunSelector());
     }
 
     private JComboBox createColorSelector() {
@@ -68,13 +69,8 @@ public class Menu extends JPanel {
 
         JComboBox dropdown = new JComboBox(colorsMap.keySet().toArray());
 
-        String shipColor = "";
-        for (Map.Entry<String, Color> entry : colorsMap.entrySet()) {
-            if (entry.getValue() == game.ship.getShipColor()) {
-                shipColor = entry.getKey();
-                break;
-            }
-        }
+        String shipColor = getKeyByValue(colorsMap, game.ship.getShipColor());
+
         shipColor = shipColor.substring(0, 1).toUpperCase() + shipColor.substring(1);
 
         dropdown.setSelectedItem(shipColor);
@@ -87,6 +83,40 @@ public class Menu extends JPanel {
             }
         });
         dropdown.setBounds(400, 330, 100, 40);
+        dropdown.setFocusable(false);
+        return dropdown;
+    }
+
+    private <K, V> K getKeyByValue(Map<K, V> map, V value) {
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            if (entry.getValue() == value) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    private JComboBox createGunSelector() {
+        Map<String, GunType> gunMap = new LinkedHashMap<>();
+        gunMap.put("Pistol", GunType.PISTOL);
+        gunMap.put("Machine Gun", GunType.MACHINE_GUN);
+        gunMap.put("Shotgun", GunType.SHOTGUN);
+
+
+        JComboBox dropdown = new JComboBox(gunMap.keySet().toArray());
+
+        String gunName = getKeyByValue(gunMap, game.ship.getGunType());
+
+        dropdown.setSelectedItem(gunName);
+
+        dropdown.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent event) {
+                if (event.getStateChange() == 1) {
+                    game.ship.setGunType(gunMap.get(event.getItem()));
+                }
+            }
+        });
+        dropdown.setBounds(400, 260, 100, 40);
         dropdown.setFocusable(false);
         return dropdown;
     }

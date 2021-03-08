@@ -146,12 +146,13 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                 spotipie.playSound(thruster);
             }
 
-            // make the back thruster go brrr
-            randomNumo = Math.random() * 50 + 70; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            for (int fart = 0; fart < randomNumo; fart++) {
-                debrisList.add(new Debris(ship.xposition, ship.yposition));
+            if (ship.active == true) {
+                // make the back thruster go brrr
+                randomNumo = Math.random() * 50 + 70; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                for (int fart = 0; fart < randomNumo; fart++) {
+                    debrisList.add(new Debris(ship.xposition, ship.yposition));
+                }
             }
-
         }
         if (spacekey == true) {
             fireBullet();
@@ -184,10 +185,14 @@ public class Game extends JFrame implements KeyListener, ActionListener {
             wavesSpawned++;
             if (wavesSpawned > 2) {
                 asteroidList.add(new Asteroid(0,0,3));
+            }
+            if (wavesSpawned > 3) {
+                asteroidList.add(new Asteroid(0,0,3));
+            }
+            if (wavesSpawned > 4) {
                 asteroidList.add(new Asteroid(0,0,3));
             }
             if (wavesSpawned > 5) {
-                asteroidList.add(new Asteroid(0,0,3));
                 asteroidList.add(new Asteroid(0,0,3));
             }
 
@@ -294,8 +299,10 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     }
 
     public void fireBullet() {
-        if (ship.counter > 7 && ship.active) { //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            bulletsList.add(new Bullet(ship.drawShape.xpoints[0], ship.drawShape.ypoints[0], ship.angle));
+        if (ship.counter > ship.getGunType().getFrequency() && ship.active) { //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+//            bulletsList.add(new Bullet(ship.drawShape.xpoints[0], ship.drawShape.ypoints[0], ship.angle));
+            ship.getGunType().getBulletBehavior().fireBullet(bulletsList, ship.drawShape.xpoints[0], ship.drawShape.ypoints[0], ship.angle);
             ship.counter = 0;
             spotipie.playSound(laser);
         }

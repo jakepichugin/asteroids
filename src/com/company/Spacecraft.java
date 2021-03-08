@@ -8,6 +8,8 @@ public class Spacecraft extends VectorSprite{
 
     Color shipColor = Color.GREEN;
 
+    GunType gunType = GunType.PISTOL;
+
     public Spacecraft() {
         ROTATION = 0.1;
         THRUST = 0.7;
@@ -65,6 +67,14 @@ public class Spacecraft extends VectorSprite{
 
     public void setShipColor(Color shipColor) {
         this.shipColor = shipColor;
+    }
+
+    public GunType getGunType() {
+        return gunType;
+    }
+
+    public void setGunType(GunType gunType) {
+        this.gunType = gunType;
     }
 
 }
