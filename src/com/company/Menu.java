@@ -1,11 +1,15 @@
 package com.company;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,6 +30,17 @@ public class Menu extends JPanel {
         super.paintComponent(g);
         game.offg.setColor(Color.black);
         game.offg.fillRect(0,0,900,600);
+
+        try {
+            BufferedImage backgroundImage = ImageIO.read(new File("./src/images/background.jpg"));
+            JLabel picLabel = new JLabel(new ImageIcon(backgroundImage));
+            this.add(picLabel);
+        }
+        catch (IOException ex) {
+            System.out.println("no worky :(");
+        }
+
+
         game.offg.setColor(Color.red);
         game.offg.setFont(new Font("MySTyle", Font.ROMAN_BASELINE, 30));
         game.offg.drawString("Menu" , 410, 80);

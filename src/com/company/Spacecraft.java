@@ -17,12 +17,16 @@ public class Spacecraft extends VectorSprite{
         shape = new Polygon();
         shape.addPoint(15,0);
         shape.addPoint(-10, 10);
+        shape.addPoint(-10, 0);
         shape.addPoint(-10, -10);
+
 
         drawShape = new Polygon();
         drawShape.addPoint(15,0);
         drawShape.addPoint(-10, 10);
+        drawShape.addPoint(-10, 0);
         drawShape.addPoint(-10, -10);
+
 
         xposition = 450;
         yposition = 300;

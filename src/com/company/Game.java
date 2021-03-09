@@ -140,18 +140,18 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         if (leftKey == true) {
             ship.rotateLeft();
         }
-        if (upKey == true) {
+        if (upKey == true && ship.active    ) {
             ship.accelerate();
-            if (ship.active ==true) {
-                spotipie.playSound(thruster);
-            }
 
-            if (ship.active == true) {
+                spotipie.playSound(thruster);
+
+
+
                 // make the back thruster go brrr
-                randomNumo = Math.random() * 50 + 70; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                randomNumo = Math.random() * 10 + 5; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 for (int fart = 0; fart < randomNumo; fart++) {
-                    debrisList.add(new Debris(ship.xposition, ship.yposition));
-                }
+                    debrisList.add(new Debris(ship.drawShape.xpoints[2], ship.drawShape.ypoints[2], ship.angle));
+
             }
         }
         if (spacekey == true) {
@@ -211,7 +211,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         }
         for (int i = 0; i < debrisList.size(); i++) {
             debrisList.get(i).updatePosition();
-            if (debrisList.get(i).counter == 50) {
+            if (debrisList.get(i).counter == 40) {
                 debrisList.remove(i);
             }
 
@@ -258,7 +258,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                 ship.hit();
                 randomNumo = Math.random() * 50 + 70; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 for (int fart = 0; fart < randomNumo; fart++) {
-                    debrisList.add(new Debris(ship.xposition, ship.yposition));
+                    debrisList.add(new Debris(ship.xposition, ship.yposition, 361));
                     spotipie.playSound(explode);
                 }
             }
@@ -269,7 +269,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                     asteroidList.get(i).active = false;
                     randomNumo = Math.random() * 50 + 70; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     for (int fart = 0; fart < randomNumo; fart++) {
-                        debrisList.add(new Debris(asteroidList.get(i).xposition, asteroidList.get(i).yposition));
+                        debrisList.add(new Debris(asteroidList.get(i).xposition, asteroidList.get(i).yposition, 361));
                         spotipie.playSound(explode);
                     }
 
